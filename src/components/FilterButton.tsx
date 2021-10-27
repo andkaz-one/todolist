@@ -3,10 +3,11 @@ import {FilterValuesType} from "../App";
 
 type PropsType = {
     callBack: (value: FilterValuesType) => void
-    btnLabel: FilterValuesType
+
+
 }
 
-export const FilterButton = ({callBack, btnLabel}: PropsType) => {
+export const FilterButton = ({callBack}: PropsType) => {
 
 
     //handler for filter buttons
@@ -14,7 +15,10 @@ export const FilterButton = ({callBack, btnLabel}: PropsType) => {
 
     return(
         <>
-            <button onClick={()=>onClickFilterHandler('all')}>{btnLabel}</button>
+            <button onClick={()=>onClickFilterHandler('all')}>all</button>
+            <button onClick={()=>onClickFilterHandler('active')}>active</button>
+            <button onClick={()=>onClickFilterHandler('completed')}>completed</button>
+
         </>
     )
 }

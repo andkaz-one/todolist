@@ -48,10 +48,7 @@ export const Todolist = (props: PropsType) => {
                 </ul>
             </div>
             <div>
-                <FilterButton callBack={props.sortedTasks} btnLabel={'all'}/>
-                <FilterButton callBack={props.sortedTasks} btnLabel={'active'}/>
-                <FilterButton callBack={props.sortedTasks} btnLabel={'completed'}/>
-
+                <FilterButton callBack={props.sortedTasks}/>
             </div>
         </div>
     )
