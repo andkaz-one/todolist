@@ -2,6 +2,7 @@ import React from 'react'
 import {FilterValuesType, TaskItemType} from "./App";
 import {InputForAddItems} from "./components/InputForAddItems";
 import {FilterButton} from "./components/FilterButton";
+import {Button, Checkbox} from "@mui/material";
 
 
 type PropsType = {
@@ -14,7 +15,6 @@ type PropsType = {
 }
 
 
-
 export const Todolist = (props: PropsType) => {
     //BUSSINES
     //handler for delete task button
@@ -24,16 +24,19 @@ export const Todolist = (props: PropsType) => {
 
 
     //handler for change checkbox
-    const changeStatusHandler = (tID: string ,isDone: boolean) => {
+    const changeStatusHandler = (tID: string, isDone: boolean) => {
         props.changeTaskStatus(tID, isDone)
     }
 
     //mapped list-element and delete button
-    const mappedTask = props.taskItem.map(t => <li><input type="checkbox"
-                                                          checked={t.isDone}
-                                                          onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>
+    const mappedTask = props.taskItem.map(t => <li style={{listStyleType: 'none'}}>
+        <Checkbox checked={t.isDone}
+                  onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}  />
         {t.title}
-        <button onClick={() => onClickRemoveTaskItem(t.id)}>X</button></li>)
+        <Button style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}}
+                variant="outlined"
+                onClick={() => onClickRemoveTaskItem(t.id)}>X</Button></li>
+    )
 
     //UI
     return (

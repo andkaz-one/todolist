@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {Button, TextField} from "@mui/material";
 
 type PropsType = {
     callBack: (title: string) => void
@@ -34,8 +35,10 @@ export const InputForAddItems = ({callBack}: PropsType) => {
 
     return (
         <div>
-            <input onChange={onChangeHandler} value={inputTitle} onKeyPress={addForPressKey}/>
-            <button onClick={onClickAddItemHandler}>+</button>
+            <TextField size="small" id="outlined-basic" label="New task" variant="outlined"
+                       onChange={onChangeHandler} value={inputTitle} onKeyPress={addForPressKey} />
+            <Button style={{maxWidth: '50px', maxHeight: '40px', minWidth: '50px', minHeight: '40px'}}
+                    variant="contained" onClick={onClickAddItemHandler}>ADD</Button>
         </div>
     )
 }
