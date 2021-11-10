@@ -2,10 +2,11 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {Button, TextField} from "@mui/material";
 
 type PropsType = {
-    callBack: (title: string) => void
+    id: string
+    callBack: (title: string, todolistID: string) => void
 }
 
-export const InputForAddItems = ({callBack}: PropsType) => {
+export const InputForAddItems = ({callBack, id}: PropsType) => {
     //state fot input
     const [inputTitle, setInputTitle] = useState('')
 
@@ -17,7 +18,7 @@ export const InputForAddItems = ({callBack}: PropsType) => {
     //handler for add-task button
     const onClickAddItemHandler = () => {
         if (inputTitle !== '') {
-            callBack(inputTitle.trim())
+            callBack(inputTitle.trim(), id)
         }
         setInputTitle('')
     }
@@ -26,7 +27,7 @@ export const InputForAddItems = ({callBack}: PropsType) => {
     const addForPressKey = (event: KeyboardEvent<HTMLInputElement>) => {
         if (inputTitle !== '') {
             if (event.charCode === 13) {
-                callBack(inputTitle.trim())
+                callBack(inputTitle.trim(), id)
                 setInputTitle('')
             }
         }
