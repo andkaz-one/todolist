@@ -3,7 +3,10 @@ import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Todolist";
 import AppHeader from "./components/AppBar";
-import {Grid, Paper} from "@mui/material";
+import {Button, Grid, Paper, TextField} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import {AddTodoLists} from "./components/AddTodoLists";
+
 
 export type TaskItemType = {
     id: string
@@ -95,6 +98,12 @@ function App() {
         setTodolists([...todolists.map(tl => tl.id === todolistID ? {...tl, filter: value} : tl)])
     }
 
+    const addTodoLists = (title: string) => {
+        const newTodolistID = v1()
+        setTodolists([...todolists, {id: newTodolistID, title: title, filter: 'all'}])
+        setTasks({...tasks, [newTodolistID] : []})
+    }
+
 
     //UI
 
@@ -102,8 +111,8 @@ function App() {
         <>
             <AppHeader/>
             <Grid container spacing={3}>
-                
 
+                <div className={'input'}><AddTodoLists callback={addTodoLists} /></div>
 
                 {todolists.map(tl => {
 
@@ -116,8 +125,6 @@ function App() {
                     if (tl.filter === "completed") {
                         taskForTodolist = allTodolistTasks.filter(t => t.isDone);
                     }
-
-
                     return (
                         <Grid item>
                             <Paper elevation={3}>
@@ -136,17 +143,11 @@ function App() {
                                 </div>
                             </Paper>
                         </Grid>
-
-
                     )
-
                 })}
             </Grid>
-
-
         </>
-    )
-        ;
+    );
 }
 
 export default App;
@@ -173,3 +174,6 @@ const [todolists, setTodolists] = useState <Array<TodolistsType>>([
       {id: v1(), title: 'REACT', isDone: false}
     ]
   })*/
+
+
+
