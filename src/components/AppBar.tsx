@@ -22,7 +22,7 @@ export default function AppHeader() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        ToDo List
+                        Todo List
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
