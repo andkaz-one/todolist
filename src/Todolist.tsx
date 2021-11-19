@@ -14,6 +14,7 @@ type PropsType = {
     sortedTasks: (value: FilterValuesType, todolistID: string) => void
     changeTaskStatus: (tID: string, isDone: boolean, todolistID: string) => void
     filter: string
+    removeTodolist: (todolistID: string) => void
 }
 
 
@@ -30,6 +31,10 @@ export const Todolist = (props: PropsType) => {
         props.changeTaskStatus(tID, isDone, props.id)
     }
 
+    const onClickRemoveTodolist = () => {
+        props.removeTodolist(props.id)
+    }
+
     //mapped list-element and delete button
     const mappedTask = props.tasks.map(t => <li style={{listStyleType: 'none'}}>
         <Checkbox checked={t.isDone}
@@ -44,7 +49,7 @@ export const Todolist = (props: PropsType) => {
     return (
         <div>
             <div>
-                <h2>{props.title}</h2>
+                <h2>{props.title}<button onClick={onClickRemoveTodolist}>x</button></h2>
                 <InputForAddItems callBack={props.addTaskItem} id={props.id}/>
             </div>
             <div>
