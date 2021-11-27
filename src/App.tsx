@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import AppHeader from "./components/AppBar";
@@ -38,31 +38,31 @@ function App() {
     const dispatch = useDispatch()
 
     //added tasks
-    const addTaskItem = (title: string, todolistID: string) => {
+    const addTaskItem = useCallback((title: string, todolistID: string) => {
         dispatch(addTaskAC(title, todolistID))
-    }
+    }, [])
 
     //deleted tasks
-    const removeTaskItem = (tID: string, todolistID: string) => {
+    const removeTaskItem = useCallback((tID: string, todolistID: string) => {
         dispatch(removeTaskAC(tID,todolistID))
-    }
+    }, [])
 
-    const changeTaskStatus = (tID: string, isDone: boolean, todolistID: string) => {
+    const changeTaskStatus = useCallback((tID: string, isDone: boolean, todolistID: string) => {
         dispatch(changeTaskStatusAC(tID, isDone, todolistID))
-    }
+    }, [])
 
     //filter for tasks
-    const sortedTasks = (value: FilterValuesType, todolistID: string) => {
+    const sortedTasks = useCallback((value: FilterValuesType, todolistID: string) => {
         dispatch(sortedTasksAC(value,todolistID))
-    }
+    }, [])
 
-    const addTodoLists = (title: string) => {
+    const addTodoLists = useCallback((title: string) => {
         dispatch(addTodolistsAC(title))
-    }
+    }, [])
 
-    const removeTodolist = (todolistID: string) => {
+    const removeTodolist = useCallback((todolistID: string) => {
         dispatch(removeTodolistAC(todolistID))
-    }
+    }, [])
 
 
     //UI
@@ -75,17 +75,6 @@ function App() {
                 <div className={'input'}><AddTodoLists callback={addTodoLists} /></div>
 
                 {todolists.map(tl => {
-
-                    let allTodolistTasks = tasks[tl.id];
-                    let taskForTodolist = allTodolistTasks;
-
-                    if (tl.filter === "active") {
-                        taskForTodolist = allTodolistTasks.filter(t => !t.isDone);
-                    }
-                    if (tl.filter === "completed") {
-                        taskForTodolist = allTodolistTasks.filter(t => t.isDone);
-                    }
-                    debugger
                     return (
                         <Grid item>
                             <Paper elevation={3}>
@@ -94,7 +83,7 @@ function App() {
                                     <Todolist
                                         id={tl.id}
                                         title={tl.title}
-                                        tasks={taskForTodolist}
+                                        tasks={tasks[tl.id]}
                                         addTaskItem={addTaskItem}
                                         removeTaskItem={removeTaskItem}
                                         sortedTasks={sortedTasks}

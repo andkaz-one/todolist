@@ -18,7 +18,7 @@ type PropsType = {
 }
 
 
-export const Todolist = (props: PropsType) => {
+export const Todolist = React.memo((props: PropsType) => {
     //BUSSINES
     //handler for delete task button
     const onClickRemoveTaskItem = (tID: string, todolistID: string) => {
@@ -35,8 +35,17 @@ export const Todolist = (props: PropsType) => {
         props.removeTodolist(props.id)
     }
 
+    let taskForTodolist = props.tasks;
+
+    if (props.filter === "active") {
+        taskForTodolist = props.tasks.filter(t => !t.isDone);
+    }
+    if (props.filter === "completed") {
+        taskForTodolist = props.tasks.filter(t => t.isDone);
+    }
+
     //mapped list-element and delete button
-    const mappedTask = props.tasks.map(t => <li style={{listStyleType: 'none'}}>
+    const mappedTask = taskForTodolist.map(t => <li style={{listStyleType: 'none'}}>
         <Checkbox checked={t.isDone}
                   onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}  />
         {t.title}
@@ -44,6 +53,8 @@ export const Todolist = (props: PropsType) => {
                 variant="outlined"
                 onClick={() => onClickRemoveTaskItem(t.id, props.id)}>X</Button></li>
     )
+
+
 
     //UI
     return (
@@ -62,6 +73,6 @@ export const Todolist = (props: PropsType) => {
             </div>
         </div>
     )
-}
+})
 
 
