@@ -8,16 +8,13 @@ const initialState: TasksType = {}
 
 export const taskReducer = (state = initialState, action: TasksActionTypes): TasksType => {
     switch (action.type) {
-
         case 'ADD-TASK': {
             let newItem = {
                 id: v1(),
                 title: action.title,
                 isDone: false
             }
-
             state[action.todolistID] = [newItem, ...state[action.todolistID]]
-
             return {...state}
         }
         case 'REMOVE-TASK': {
@@ -30,7 +27,6 @@ export const taskReducer = (state = initialState, action: TasksActionTypes): Tas
             state[action.todolistID] = state[action.todolistID].map(t => t.id === action.tID ? {...t, isDone: action.isDone} : t)
             return {...state}
         }
-
         case 'ADD-TODOLISTS': {
             let copy = {...state}
             copy[action.todolistID] = []
@@ -40,12 +36,22 @@ export const taskReducer = (state = initialState, action: TasksActionTypes): Tas
             delete state[action.todolistID]
             return {...state}
         }
+        case 'CHANGE-TASK-TITLE' : {
+            state[action.todolistID] = state[action.todolistID].map(t => t.id === action.tID ? {...t, title: action.title}: t)
+            return {...state}
+
+        }
         default: return state
 
     }
 }
 
-export type TasksActionTypes = RemoveTaskActionType | AddTaskActionType | ChangeTaskStatusActionType | AddTodolistsActionType | RemoveTodolistActionType
+export type TasksActionTypes = RemoveTaskActionType
+    | AddTaskActionType
+    | ChangeTaskStatusActionType
+    | AddTodolistsActionType
+    | RemoveTodolistActionType
+    | ChangeTaskTitleActionType
 
 type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
 
@@ -74,6 +80,17 @@ export const changeTaskStatusAC = (tID: string, isDone: boolean, todolistID: str
         type: 'CHANGE-TASK-STATUS',
         tID,
         isDone,
+        todolistID
+    } as const
+}
+
+type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
+
+export const changeTaskTitleAC = (tID: string ,title: string, todolistID: string) => {
+    return {
+        type: 'CHANGE-TASK-TITLE',
+        tID,
+        title,
         todolistID
     } as const
 }

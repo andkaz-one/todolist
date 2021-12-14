@@ -5,7 +5,7 @@ import AppHeader from "./components/AppBar";
 import {Button, Grid, Paper, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {AddTodoLists} from "./components/AddTodoLists";
-import {addTaskAC, changeTaskStatusAC, removeTaskAC} from "./redux/task-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redux/task-reducer";
 import {addTodolistsAC, removeTodolistAC, sortedTasksAC} from "./redux/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {mainStateType} from "./redux/store";
@@ -51,6 +51,10 @@ function App() {
         dispatch(changeTaskStatusAC(tID, isDone, todolistID))
     }, [])
 
+    const changeTaskTitle = useCallback((tID: string,title: string, todolistID: string) => {
+        dispatch(changeTaskTitleAC(tID ,title, todolistID))
+    }, [])
+
     //filter for tasks
     const sortedTasks = useCallback((value: FilterValuesType, todolistID: string) => {
         dispatch(sortedTasksAC(value,todolistID))
@@ -88,6 +92,7 @@ function App() {
                                         removeTaskItem={removeTaskItem}
                                         sortedTasks={sortedTasks}
                                         changeTaskStatus={changeTaskStatus}
+                                        changeTaskTitle={changeTaskTitle}
                                         filter={tl.filter}
                                         removeTodolist={removeTodolist}
                                     />

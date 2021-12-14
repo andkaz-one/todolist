@@ -3,6 +3,7 @@ import {FilterValuesType, TaskItemType, TasksType} from "./App";
 import {InputForAddItems} from "./components/InputForAddItems";
 import {FilterButton} from "./components/FilterButton";
 import {Button, Checkbox} from "@mui/material";
+import {EditableTitleTask} from "./components/EditableTitleTask";
 
 
 type PropsType = {
@@ -13,6 +14,7 @@ type PropsType = {
     removeTaskItem: (tID: string, todolistID: string) => void
     sortedTasks: (value: FilterValuesType, todolistID: string) => void
     changeTaskStatus: (tID: string, isDone: boolean, todolistID: string) => void
+    changeTaskTitle: (tID: string, title: string, todolistID: string) => void
     filter: string
     removeTodolist: (todolistID: string) => void
 }
@@ -30,7 +32,12 @@ export const Todolist = React.memo((props: PropsType) => {
     const changeStatusHandler = (tID: string, isDone: boolean) => {
         props.changeTaskStatus(tID, isDone, props.id)
     }
+// handler for edit tasks
+    const changeTaskTitleHandler = (tID: string, newTitle: string) => {
+        props.changeTaskTitle(tID, newTitle, props.id)
 
+    }
+//handler for delete todolist
     const onClickRemoveTodolist = () => {
         props.removeTodolist(props.id)
     }
@@ -47,20 +54,21 @@ export const Todolist = React.memo((props: PropsType) => {
     //mapped list-element and delete button
     const mappedTask = taskForTodolist.map(t => <li style={{listStyleType: 'none'}}>
         <Checkbox checked={t.isDone}
-                  onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}  />
-        {t.title}
+                  onChange={(e) => changeStatusHandler(t.id, e.currentTarget.checked)}/>
+        <EditableTitleTask callBack={changeTaskTitleHandler} title={t.title} tID={t.id}/>
         <Button style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}}
                 variant="outlined"
                 onClick={() => onClickRemoveTaskItem(t.id, props.id)}>X</Button></li>
     )
 
 
-
     //UI
     return (
         <div>
             <div>
-                <h2>{props.title}<button onClick={onClickRemoveTodolist}>x</button></h2>
+                <h2>{props.title}
+                    <Button variant={'outlined'} onClick={onClickRemoveTodolist}>x</Button>
+                </h2>
                 <InputForAddItems callBack={props.addTaskItem} id={props.id}/>
             </div>
             <div>

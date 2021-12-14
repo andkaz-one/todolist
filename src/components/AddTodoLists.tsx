@@ -14,8 +14,10 @@ export const AddTodoLists = (props: PropsType) => {
         setTitle(event.currentTarget.value)
     }
     const onClickHandler = () => {
-        props.callback(title)
-        setTitle('')
+        if (title) {
+            props.callback(title)
+            setTitle('')
+        }
     }
 
     return <div>
@@ -25,8 +27,6 @@ export const AddTodoLists = (props: PropsType) => {
             onClick={onClickHandler}
             style={{maxWidth: '50px', maxHeight: '50px', minWidth: '50px', minHeight: '50px'}}
             variant="text" endIcon={<AddIcon/>}>
-
         </Button>
-
     </div>
 }
