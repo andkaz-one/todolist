@@ -41,7 +41,7 @@ export const Todolist = React.memo((props: PropsType) => {
     const onClickRemoveTodolist = () => {
         props.removeTodolist(props.id)
     }
-
+//tasks for sort button
     let taskForTodolist = props.tasks;
 
     if (props.filter === "active") {
