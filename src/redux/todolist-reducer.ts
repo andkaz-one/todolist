@@ -1,10 +1,24 @@
 import {v1} from "uuid";
 import {FilterValuesType, TodolistsType} from "../App";
+import {GetTodolistType, todoAPI} from "../dal/todoAPI";
+import {AxiosResponse} from "axios";
+import {useDispatch} from "react-redux";
+import {Dispatch} from "redux";
+import {mainStateType} from "./store";
 
 const initialState: Array<TodolistsType> = []
 
+export type TodolistsDomainType = GetTodolistType & {filter: FilterValuesType}
+
+
+
 export const todolistReducer = (state = initialState,action: TodolistsActionType): Array<TodolistsType> => {
     switch (action.type) {
+        case "SET-TODOLIST": {
+            return action.todolosts.map((tl) => {
+                return {...tl, filter: 'all'}
+            })
+        }
         case 'ADD-TODOLISTS': {
             return [...state, {id: action.todolistID, title: action.title, filter: 'all'}]
         }
@@ -18,7 +32,7 @@ export const todolistReducer = (state = initialState,action: TodolistsActionType
     }
 }
 
-export type TodolistsActionType = AddTodolistsActionType | RemoveTodolistActionType | SortedTasksActionType
+export type TodolistsActionType = AddTodolistsActionType | RemoveTodolistActionType | SortedTasksActionType | setTodolistsActionType
 
 export type AddTodolistsActionType = ReturnType<typeof addTodolistsAC>
 
@@ -49,3 +63,30 @@ export const sortedTasksAC = (value: FilterValuesType, todolistID: string) => {
     } as const
 }
 
+export type setTodolistsActionType = ReturnType<typeof setTodolistsAC>
+
+export const setTodolistsAC = (todolosts: Array<GetTodolistType>) => {
+    return {
+            type: 'SET-TODOLIST',
+            todolosts
+        }as const
+
+}
+
+//THUNK
+
+export const setTodolistTC = (dispatch: Dispatch): void => {
+    todoAPI.getTodolists()
+        .then((res) => {
+            const todo = res.data
+            dispatch(setTodolistsAC(todo))
+        })
+}
+
+export const createTodolistTC = (title: string) => (dispatch: Dispatch) => {
+    todoAPI.createTodolist(title)
+        .then((res) => {
+        dispatch(addTodolistsAC(res.data.title))
+    })
+
+}

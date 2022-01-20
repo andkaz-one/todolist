@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import AppHeader from "./components/AppBar";
@@ -6,9 +6,17 @@ import {Button, Grid, Paper, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {AddTodoLists} from "./components/AddTodoLists";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redux/task-reducer";
-import {addTodolistsAC, removeTodolistAC, sortedTasksAC} from "./redux/todolist-reducer";
+import {
+    addTodolistsAC,
+    createTodolistTC,
+    removeTodolistAC,
+    setTodolistsAC,
+    setTodolistTC,
+    sortedTasksAC
+} from "./redux/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {mainStateType} from "./redux/store";
+import {todoAPI} from "./dal/todoAPI";
 
 
 export type TaskItemType = {
@@ -31,6 +39,13 @@ export type TasksType = {
 
 function App() {
     //BUSSINES
+
+    useEffect(() => {
+        dispatch(setTodolistTC)
+
+    }, [])
+
+
 
     const todolists = useSelector<mainStateType, Array<TodolistsType>>(state => state.todolists)
     const tasks = useSelector<mainStateType, TasksType>(state => state.tasks)
@@ -61,7 +76,7 @@ function App() {
     }, [])
 
     const addTodoLists = useCallback((title: string) => {
-        dispatch(addTodolistsAC(title))
+        dispatch(createTodolistTC(title))
     }, [])
 
     const removeTodolist = useCallback((todolistID: string) => {
